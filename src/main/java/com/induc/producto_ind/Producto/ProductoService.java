@@ -14,8 +14,18 @@ public class ProductoService {
     private final ProductosRepository productoRepo;
     private final CategoriaService categoriaService;
 
-    public List<Producto> getListaProductos(){
-        return productoRepo.findAll();
+    public ProductoResponse getListaProductos(){
+        try{
+            return ProductoResponse.builder()
+                    .codigo(200)
+                    .mensaje("Consulta realizada con exito")
+                    .productos(productoRepo.findAll()).build();
+        }catch(Exception e){
+            return  ProductoResponse.builder()
+                    .codigo(500)
+                    .mensaje("Error al obtener la lista de productos")
+                    .build();
+        }
     }
 
     public ProductoResponse addProducto(ProductoRequest request) {
@@ -29,17 +39,17 @@ public class ProductoService {
                     .build();
             System.out.println(categoria.getId());
             productoRepo.save(newProducto);
-            return new ProductoResponse(201, "Producto creado con exito");
+            return new ProductoResponse(201, "Producto creado con exito", null);
         }catch (Exception e){
-            return new ProductoResponse(500, "Error al crear el producto: " + e.getMessage());
+            return new ProductoResponse(500, "Error al crear el producto: " + e.getMessage(), null);
         }
     }
 
     public ProductoResponse deactivate(int id) {
         try {
-            return new ProductoResponse(202, "Producto desactivado con exito");
+            return new ProductoResponse(202, "Producto desactivado con exito", null);
         } catch (Exception e) {
-            return  new ProductoResponse(500, "Error al desactivar el producto");
+            return  new ProductoResponse(500, "Error al desactivar el producto", null);
         }
 
     }

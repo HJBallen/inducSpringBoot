@@ -2,6 +2,7 @@ package com.induc.producto_ind.Producto;
 
 import com.induc.producto_ind.Interfaces.IResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +20,9 @@ public class ProductoController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Producto>> getProductos(){
-        return ResponseEntity.ok(productoService.getListaProductos());
+    public ResponseEntity<IResponse> getProductos(){
+        ProductoResponse res = productoService.getListaProductos();
+        return ResponseEntity.status(res.getCodigo()).body(res);
     }
 
     public String getProductosPorCategria(){
